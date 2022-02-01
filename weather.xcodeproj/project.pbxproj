@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA2A084D27830CA400A682C1 /* 9day_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084B27830CA400A682C1 /* 9day_weather.json */; };
+		AA2A084E27830CA400A682C1 /* 9day_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084B27830CA400A682C1 /* 9day_weather.json */; };
+		AA2A084F27830CA400A682C1 /* today_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084C27830CA400A682C1 /* today_weather.json */; };
+		AA2A085027830CA400A682C1 /* today_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084C27830CA400A682C1 /* today_weather.json */; };
 		AA927A6B277C5A1D0077A190 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A6A277C5A1D0077A190 /* Tests_iOS.swift */; };
 		AA927A6D277C5A1D0077A190 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A6C277C5A1D0077A190 /* Tests_iOSLaunchTests.swift */; };
 		AA927A77277C5A1D0077A190 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A76277C5A1D0077A190 /* Tests_macOS.swift */; };
@@ -37,10 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA2A084B27830CA400A682C1 /* 9day_weather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 9day_weather.json; sourceTree = "<group>"; };
+		AA2A084C27830CA400A682C1 /* today_weather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = today_weather.json; sourceTree = "<group>"; };
+		AA3D58A927A6A9FB0094D89B /* weather (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "weather (iOS).entitlements"; sourceTree = "<group>"; };
 		AA927A52277C5A1C0077A190 /* weatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weatherApp.swift; sourceTree = "<group>"; };
 		AA927A53277C5A1C0077A190 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA927A54277C5A1D0077A190 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AA927A59277C5A1D0077A190 /* weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA927A59277C5A1D0077A190 /* HKWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HKWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA927A5F277C5A1D0077A190 /* weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA927A61277C5A1D0077A190 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		AA927A66277C5A1D0077A190 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,9 +90,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA2A084A27830C4B00A682C1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AA2A084B27830CA400A682C1 /* 9day_weather.json */,
+				AA2A084C27830CA400A682C1 /* today_weather.json */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		AA927A4C277C5A1C0077A190 = {
 			isa = PBXGroup;
 			children = (
+				AA3D58A927A6A9FB0094D89B /* weather (iOS).entitlements */,
 				AA927A51277C5A1C0077A190 /* Shared */,
 				AA927A60277C5A1D0077A190 /* macOS */,
 				AA927A69277C5A1D0077A190 /* Tests iOS */,
@@ -97,6 +114,7 @@
 		AA927A51277C5A1C0077A190 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA2A084A27830C4B00A682C1 /* Preview Content */,
 				AA927A52277C5A1C0077A190 /* weatherApp.swift */,
 				AA927A53277C5A1C0077A190 /* ContentView.swift */,
 				AA927A54277C5A1D0077A190 /* Assets.xcassets */,
@@ -107,7 +125,7 @@
 		AA927A5A277C5A1D0077A190 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA927A59277C5A1D0077A190 /* weather.app */,
+				AA927A59277C5A1D0077A190 /* HKWeather.app */,
 				AA927A5F277C5A1D0077A190 /* weather.app */,
 				AA927A66277C5A1D0077A190 /* Tests iOS.xctest */,
 				AA927A72277C5A1D0077A190 /* Tests macOS.xctest */,
@@ -158,7 +176,7 @@
 			);
 			name = "weather (iOS)";
 			productName = "weather (iOS)";
-			productReference = AA927A59277C5A1D0077A190 /* weather.app */;
+			productReference = AA927A59277C5A1D0077A190 /* HKWeather.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AA927A5E277C5A1D0077A190 /* weather (macOS) */ = {
@@ -267,6 +285,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA927A7E277C5A1D0077A190 /* Assets.xcassets in Resources */,
+				AA2A084F27830CA400A682C1 /* today_weather.json in Resources */,
+				AA2A084D27830CA400A682C1 /* 9day_weather.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +295,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA927A7F277C5A1D0077A190 /* Assets.xcassets in Resources */,
+				AA2A085027830CA400A682C1 /* today_weather.json in Resources */,
+				AA2A084E27830CA400A682C1 /* 9day_weather.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +485,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "weather (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
@@ -471,6 +494,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
@@ -478,10 +502,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
-				PRODUCT_NAME = weather;
+				PRODUCT_NAME = HKWeather;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -493,6 +518,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "weather (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
@@ -501,6 +527,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
@@ -508,10 +535,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
-				PRODUCT_NAME = weather;
+				PRODUCT_NAME = HKWeather;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
