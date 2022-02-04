@@ -1,0 +1,134 @@
+{
+    "data": [
+      {
+        "place": "King’s Park",
+        "latitude": 22.309355992556632,
+        "longitude": 114.17532115363021
+      },
+      {
+        "place": "Hong Kong Observatory",
+        "latitude": 22.302256221717066,
+        "longitude": 114.17431635702995
+      },
+      {
+        "place": "Wong Chuk Hang",
+        "latitude": 22.245989944381805,
+        "longitude": 114.16641249144273
+      },
+      {
+        "place": "Ta Kwu Ling",
+        "latitude": 22.539168066692888,
+        "longitude": 114.16177920502456
+      },
+      {
+        "place": "Lau Fau Shan",
+        "latitude": 22.469201752134047,
+        "longitude": 113.98448884481633
+      },
+      {
+        "place": "Tai Po",
+        "latitude": 22.442656512013105,
+        "longitude": 114.1662506346717
+      },
+      {
+        "place": "Sha Tin",
+        "latitude": 22.376829594022748,
+        "longitude": 114.19699745891742
+      },
+      {
+        "place": "Tuen Mun",
+        "latitude": 22.391580679100798,
+        "longitude": 113.97278032480374
+      },
+      {
+        "place": "Tseung Kwan O",
+        "latitude": 22.307591327146667,
+        "longitude": 114.25980193667868
+      },
+      {
+        "place": "Sai Kung",
+        "latitude": 22.384482200580518,
+        "longitude": 114.27088532769211
+      },
+      {
+        "place": "Chek Lap Kok",
+        "latitude": 22.310272449732793,
+        "longitude": 113.92441622024657
+      },
+      {
+        "place": "Tsing Yi",
+        "latitude": 22.348484691662293,
+        "longitude": 114.1026229289541
+      },
+      {
+        "place": "Shek Kong",
+        "latitude": 22.42531521332052,
+        "longitude": 114.07544491681418
+      },
+      {
+        "place": "Tsuen Wan Ho Koon",
+        "latitude": 22.383696223886652,
+        "longitude": 114.10814803189537
+      },
+      {
+        "place": "Tsuen Wan Shing Man Valley",
+        "latitude": 22.374645266983777,
+        "longitude": 114.12501707192945
+      },
+      {
+        "place": "Hong Kong Park",
+        "latitude": 22.277202535305108,
+        "longitude": 114.16085878812505
+      },
+      {
+        "place": "Shau Kei Wan",
+        "latitude": 22.279236935367962,
+        "longitude": 114.22887345852376
+      },
+      {
+        "place": "Kowloon City",
+        "latitude": 22.330674270244092,
+        "longitude": 114.19164538491026
+      },
+      {
+        "place": "Happy Valley",
+        "latitude": 22.268413280566918,
+        "longitude": 114.18646343555572
+      },
+      {
+        "place": "Wong Tai Sin",
+        "latitude": 22.341529195356756,
+        "longitude": 114.1937057115822
+      },
+      {
+        "place": "Stanley",
+        "latitude": 22.22056153144759,
+        "longitude": 114.2125997041493
+      },
+      {
+        "place": "Kwun Tong",
+        "latitude": 22.31061262834004,
+        "longitude": 114.2230724808883
+      },
+      {
+        "place": "Sham Shui Po",
+        "latitude": 22.3307214699439,
+        "longitude": 114.16225511043481
+      },
+      {
+        "place": "Kai Tak Runway Park",
+        "latitude": 22.30503840245394,
+        "longitude": 114.2162410726363
+      },
+      {
+        "place": "Yuen Long Park",
+        "latitude": 22.44188834839534,
+        "longitude": 114.01882721285403
+      },
+      {
+        "place": "Tai Mei Tuk",
+        "latitude": 22.47314496367194,
+        "longitude": 114.23337708263655
+      }
+    ]
+  }

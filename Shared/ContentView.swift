@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ContentView: View {
     @State var getTodayWeatherData = todayWeatherInfo()
@@ -14,6 +15,11 @@ struct ContentView: View {
     let weatherIcon = ["Cloudy", "Cold", "Hot", "Raining", "Sunny intervals", "Sunny", "Thunder", "Windy"]
     let weatherIconNumber = [[60, 61, 76, 77, 83, 84, 85], [92, 93], [90, 91], [53, 54, 62, 63, 64], [51, 52, 76], [50, 70, 71, 72, 73, 74, 75], [65], [80, 81, 82]]
     @State var getNineDaysWeatherData = nineDaysWeatherInfo()
+    
+    @State var manager = CLLocationManager()
+    @StateObject var locationManager = LocationManager()
+    @State var ShowLocation = ""
+    @State var ShowTemperature = 0
     
     let startColor = Color(red: 238/255, green: 231/255, blue: 203/255)
     let middleColor = Color(red: 57/255, green: 61/255, blue: 93/255, opacity: 0.76)
@@ -26,6 +32,7 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     Button(action: {
+                        find_place()
                         get_today_weather()
                         get_nine_days_weather()
                     }) {
@@ -39,7 +46,7 @@ struct ContentView: View {
             HStack{
                 VStack(alignment: .leading){
                     HStack {
-                        Text(getTodayWeatherData.temperature?.data?[0].place ?? "Hong Kong")
+                        Text(ShowLocation)
                             .font(.largeTitle)
                         Image(systemName: "location.fill")
                             .font(.title2)
@@ -49,7 +56,7 @@ struct ContentView: View {
                         .frame(width: 200, height: 200)
                     Text(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
                         .font(.largeTitle)
-                    Text(String((getTodayWeatherData.temperature?.data![0].value) ?? 0) + "℃")
+                    Text(String(ShowTemperature) + "℃")
                         .font(.title)
                 }
                 Spacer()
@@ -57,19 +64,6 @@ struct ContentView: View {
             .padding(.bottom, 50)
             ScrollView(.horizontal) {
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text("Today")
-                            .font(.title)
-                        Text(String(todayMaxTemp) + "℃")
-                            .font(.title2)
-                        Text(String(todayMinTemp) + "℃")
-                            .font(.title2)
-                        VStack{
-                            Image(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
-                            Text(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
-                        }
-                    }
-                    .padding(.trailing, 15)
                     if getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                         ForEach (getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
                             VStack(alignment: .leading) {
@@ -92,6 +86,8 @@ struct ContentView: View {
             Spacer()
         }
         .onAppear(){
+            self.manager.delegate = self.locationManager
+            find_place()
             get_today_weather()
             get_nine_days_weather()
         }
@@ -132,11 +128,21 @@ struct ContentView: View {
                     if let todayWeatherData = try? decoder.decode(todayWeatherInfo.self, from: data) {
                         DispatchQueue.main.async{
                             getTodayWeatherData = todayWeatherData
+                            mach_temp_location()
                             find_max_min_temp()
                         }
                     }
                 }
             }.resume()
+        }
+    }
+    
+    //match temperature with user location
+    func mach_temp_location() {
+        for i in getTodayWeatherData.temperature?.data ?? [] {
+            if i.place == ShowLocation {
+                ShowTemperature = i.value ?? 0
+            }
         }
     }
     
@@ -212,13 +218,62 @@ struct ContentView: View {
     }
     
     func date_format(weatherDate: String) -> String{
+        let today_m = "0" + String(Calendar.current.component(.month, from: Date()))
+        let today_d = "0" + String(Calendar.current.component(.day, from: Date()))
         let dummy = weatherDate.suffix(4)
         let m = dummy.prefix(2)
         let d = dummy.suffix(2)
-        let output = String(d + "/" + m)
+        var output = ""
+        if (today_m == m) && (today_d == d) {
+            output = "Today"
+        }else{
+            output = String(d + "/" + m)
+        }
+        
         return output
     }
     
+    struct locationInfo: Codable {
+        var data: [locationData]?
+    }
+    
+    struct locationData: Codable {
+        var place: String?
+        var longitude: Double?
+        var latitude: Double?
+    }
+    
+    func find_place() {
+        var getLocationData = locationInfo()
+        if let path = Bundle.main.path(forResource: "location", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let decoder = JSONDecoder()
+
+                if let locationData = try? decoder.decode(locationInfo.self, from: data) {
+//                    DispatchQueue.main.async{
+                        getLocationData = locationData
+//                    }
+                }
+                
+              } catch {
+                   // handle error
+              }
+        }
+        let userLocation = manager.location
+//        let CCL_userLocation = CLLocation(latitude: userLocation?.latitude ?? 0.0, longitude: userLocation?.longitude ?? 0.0)
+        let CLL_getLocationData = CLLocation(latitude: getLocationData.data?[0].latitude ?? 0.0, longitude: getLocationData.data?[0].longitude ?? 0.0)
+        var distanceInMeters = CLL_getLocationData.distance(from: userLocation ?? CLLocation(latitude: 0, longitude: 0))
+        
+        for i in getLocationData.data ?? [] {
+            let location = CLLocation(latitude: i.latitude ?? 0.0, longitude: i.longitude ?? 0.0)
+            let dummy = location.distance(from: userLocation ?? CLLocation(latitude: 0, longitude: 0))
+            if dummy < distanceInMeters {
+                distanceInMeters = dummy
+                ShowLocation = i.place ?? ""
+            }
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
