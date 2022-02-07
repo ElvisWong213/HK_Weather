@@ -12,6 +12,7 @@
 		AA02A4E427AD9F9500D3A6C0 /* WeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA02A4E327AD9F9500D3A6C0 /* WeatherWidget.swift */; };
 		AA02A4E627AD9F9600D3A6C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA02A4E527AD9F9600D3A6C0 /* Assets.xcassets */; };
 		AA02A4EA27AD9F9600D3A6C0 /* WeatherWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AA02A4DF27AD9F9500D3A6C0 /* WeatherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA02A4F327AE7E9600D3A6C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA927A54277C5A1D0077A190 /* Assets.xcassets */; };
 		AA2A084D27830CA400A682C1 /* 9day_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084B27830CA400A682C1 /* 9day_weather.json */; };
 		AA2A084E27830CA400A682C1 /* 9day_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084B27830CA400A682C1 /* 9day_weather.json */; };
 		AA2A084F27830CA400A682C1 /* today_weather.json in Resources */ = {isa = PBXBuildFile; fileRef = AA2A084C27830CA400A682C1 /* today_weather.json */; };
@@ -19,7 +20,7 @@
 		AA3D58AC27A950AF0094D89B /* location.json in Resources */ = {isa = PBXBuildFile; fileRef = AA3D58AB27A950AF0094D89B /* location.json */; };
 		AA3D58AD27A950AF0094D89B /* location.json in Resources */ = {isa = PBXBuildFile; fileRef = AA3D58AB27A950AF0094D89B /* location.json */; };
 		AA3D58AF27A956CE0094D89B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3D58AE27A956CE0094D89B /* LocationManager.swift */; };
-		AA3D58B027A956CE0094D89B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3D58AE27A956CE0094D89B /* LocationManager.swift */; };
+		AA3FB18A27B1612E009A5DAF /* location.json in Resources */ = {isa = PBXBuildFile; fileRef = AA3D58AB27A950AF0094D89B /* location.json */; };
 		AA927A6B277C5A1D0077A190 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A6A277C5A1D0077A190 /* Tests_iOS.swift */; };
 		AA927A6D277C5A1D0077A190 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A6C277C5A1D0077A190 /* Tests_iOSLaunchTests.swift */; };
 		AA927A77277C5A1D0077A190 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A76277C5A1D0077A190 /* Tests_macOS.swift */; };
@@ -27,9 +28,9 @@
 		AA927A7A277C5A1D0077A190 /* weatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A52277C5A1C0077A190 /* weatherApp.swift */; };
 		AA927A7B277C5A1D0077A190 /* weatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A52277C5A1C0077A190 /* weatherApp.swift */; };
 		AA927A7C277C5A1D0077A190 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A53277C5A1C0077A190 /* ContentView.swift */; };
-		AA927A7D277C5A1D0077A190 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA927A53277C5A1C0077A190 /* ContentView.swift */; };
 		AA927A7E277C5A1D0077A190 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA927A54277C5A1D0077A190 /* Assets.xcassets */; };
 		AA927A7F277C5A1D0077A190 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA927A54277C5A1D0077A190 /* Assets.xcassets */; };
+		AA9FE15F27AF054E00AB8813 /* WidgetLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9FE15E27AF054E00AB8813 /* WidgetLocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		AA02A4EB27AD9F9600D3A6C0 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		AA2A084B27830CA400A682C1 /* 9day_weather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 9day_weather.json; sourceTree = "<group>"; };
 		AA2A084C27830CA400A682C1 /* today_weather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = today_weather.json; sourceTree = "<group>"; };
+		AA3B6F4D27B15A1100D4CD1D /* weather--iOS--Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "weather--iOS--Info.plist"; sourceTree = "<group>"; };
 		AA3D58A927A6A9FB0094D89B /* weather (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "weather (iOS).entitlements"; sourceTree = "<group>"; };
 		AA3D58AB27A950AF0094D89B /* location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = location.json; sourceTree = "<group>"; };
 		AA3D58AE27A956CE0094D89B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		AA927A72277C5A1D0077A190 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA927A76277C5A1D0077A190 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AA927A78277C5A1D0077A190 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		AA9FE15E27AF054E00AB8813 /* WidgetLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +156,7 @@
 				AA02A4E327AD9F9500D3A6C0 /* WeatherWidget.swift */,
 				AA02A4E527AD9F9600D3A6C0 /* Assets.xcassets */,
 				AA02A4E727AD9F9600D3A6C0 /* Info.plist */,
+				AA9FE15E27AF054E00AB8813 /* WidgetLocationManager.swift */,
 			);
 			path = WeatherWidget;
 			sourceTree = "<group>";
@@ -177,6 +181,7 @@
 		AA927A4C277C5A1C0077A190 = {
 			isa = PBXGroup;
 			children = (
+				AA3B6F4D27B15A1100D4CD1D /* weather--iOS--Info.plist */,
 				AA02A4EB27AD9F9600D3A6C0 /* WeatherWidgetExtension.entitlements */,
 				AA3D58A927A6A9FB0094D89B /* weather (iOS).entitlements */,
 				AA927A51277C5A1C0077A190 /* Shared */,
@@ -388,6 +393,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA02A4F327AE7E9600D3A6C0 /* Assets.xcassets in Resources */,
+				AA3FB18A27B1612E009A5DAF /* location.json in Resources */,
 				AA02A4E627AD9F9600D3A6C0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,6 +442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA9FE15F27AF054E00AB8813 /* WidgetLocationManager.swift in Sources */,
 				AA02A4E427AD9F9500D3A6C0 /* WeatherWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,9 +461,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA927A7D277C5A1D0077A190 /* ContentView.swift in Sources */,
 				AA927A7B277C5A1D0077A190 /* weatherApp.swift in Sources */,
-				AA3D58B027A956CE0094D89B /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,13 +517,15 @@
 				INFOPLIST_FILE = WeatherWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "It allows us to provide weather information near your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "It allows us to provide weather information near your location.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather.WeatherWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -542,13 +550,15 @@
 				INFOPLIST_FILE = WeatherWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "It allows us to provide weather information near your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "It allows us to provide weather information near your location.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather.WeatherWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -680,10 +690,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "weather (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "weather--iOS--Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "It allows us to provide weather information near your location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -696,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
 				PRODUCT_NAME = HKWeather;
 				SDKROOT = iphoneos;
@@ -716,10 +727,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "weather (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "weather--iOS--Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "It allows us to provide weather information near your location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -732,7 +744,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
 				PRODUCT_NAME = HKWeather;
 				SDKROOT = iphoneos;
@@ -753,7 +765,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -766,7 +778,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
 				PRODUCT_NAME = weather;
 				SDKROOT = macosx;
@@ -783,7 +795,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "" ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -796,7 +808,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "elvis-weather-app.weather";
 				PRODUCT_NAME = weather;
 				SDKROOT = macosx;

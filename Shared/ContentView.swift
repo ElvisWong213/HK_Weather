@@ -87,9 +87,9 @@ struct ContentView: View {
         }
         .onAppear(){
             self.manager.delegate = self.locationManager
-            find_place()
             get_today_weather()
             get_nine_days_weather()
+            find_place()
         }
         .padding(.leading, 20)
         .background(
@@ -217,6 +217,7 @@ struct ContentView: View {
         }
     }
     
+    //MARK: need fix today_m and today_d
     func date_format(weatherDate: String) -> String{
         let today_m = "0" + String(Calendar.current.component(.month, from: Date()))
         let today_d = "0" + String(Calendar.current.component(.day, from: Date()))
@@ -233,6 +234,7 @@ struct ContentView: View {
         return output
     }
     
+    // user location
     struct locationInfo: Codable {
         var data: [locationData]?
     }
@@ -261,7 +263,6 @@ struct ContentView: View {
               }
         }
         let userLocation = manager.location
-//        let CCL_userLocation = CLLocation(latitude: userLocation?.latitude ?? 0.0, longitude: userLocation?.longitude ?? 0.0)
         let CLL_getLocationData = CLLocation(latitude: getLocationData.data?[0].latitude ?? 0.0, longitude: getLocationData.data?[0].longitude ?? 0.0)
         var distanceInMeters = CLL_getLocationData.distance(from: userLocation ?? CLLocation(latitude: 0, longitude: 0))
         
