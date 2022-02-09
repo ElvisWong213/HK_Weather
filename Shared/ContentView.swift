@@ -71,8 +71,10 @@ struct ContentView: View {
                                     .font(.title)
                                 Text(String(weatherData.forecastMaxtemp?.value ?? 0) + "℃")
                                     .font(.title2)
+                                    .foregroundColor(Color.red)
                                 Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
                                     .font(.title2)
+                                    .foregroundColor(Color.blue)
                                 VStack{
                                     Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
                                     Text(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
@@ -217,10 +219,19 @@ struct ContentView: View {
         }
     }
     
-    //MARK: need fix today_m and today_d
     func date_format(weatherDate: String) -> String{
-        let today_m = "0" + String(Calendar.current.component(.month, from: Date()))
-        let today_d = "0" + String(Calendar.current.component(.day, from: Date()))
+        let dummy_m = Calendar.current.component(.month, from: Date())
+        let dummy_d = Calendar.current.component(.day, from: Date())
+        var today_m = String(dummy_m)
+        var today_d = String(dummy_d)
+
+        if dummy_m < 10 {
+            today_m = "0" + String(dummy_m)
+        }
+        if dummy_d < 10 {
+            today_d = "0" + String(dummy_d)
+        }
+        
         let dummy = weatherDate.suffix(4)
         let m = dummy.prefix(2)
         let d = dummy.suffix(2)
