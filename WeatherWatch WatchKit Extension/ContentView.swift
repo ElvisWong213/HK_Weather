@@ -1,12 +1,13 @@
 //
 //  ContentView.swift
-//  Shared
+//  WeatherWatch WatchKit Extension
 //
-//  Created by Steve on 29/12/2021.
+//  Created by Steve on 10/2/2022.
 //
 
 import SwiftUI
 import CoreLocation
+
 
 struct ContentView: View {
     @State var getTodayWeatherData = todayWeatherInfo()
@@ -22,97 +23,78 @@ struct ContentView: View {
     @State var ShowLocation = ""
     @State var ShowTemperature = 0
     
-    let startColor = Color(red: 238/255, green: 231/255, blue: 203/255)
-    let middleColor = Color(red: 57/255, green: 61/255, blue: 93/255, opacity: 0.76)
-    let endColor = Color(red: 57/255, green: 61/255, blue: 93/255)
-    
     //update timer
     let timer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
     
-    // check app is active, inactive or background
     @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
-        VStack{
-            Spacer()
-            HStack {
-                Spacer()
-                Button(action: {
-                    find_place()
-                    get_today_weather()
-                    get_max_min_temp()
-                    get_nine_days_weather()
-                }) {
-                    Image(systemName: "goforward")
-                        .font(.largeTitle)
-                }
-                .padding(.trailing, 15)
-            }
+        ScrollView {
             HStack{
                 VStack(alignment: .leading){
                     HStack {
                         Text(ShowLocation)
-                            .font(.largeTitle)
                         Image(systemName: "location.fill")
-                            .font(.title2)
                     }
                     Image(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60))
                         .resizable()
-                        .frame(width: 200, height: 200)
+                        .frame(width: 60, height: 60)
                     Text(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
-                        .font(.largeTitle)
                     Text(String(ShowTemperature) + "℃")
-                        .font(.title)
                     Text(String(getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
-                        .font(.title2)
+                        .font(.footnote)
                         
                 }
                 Spacer()
             }
-            .padding(.bottom, 50)
-            ScrollView(.horizontal) {
-                HStack {
-                    if getMaxAndMinTempData.count > 0 {
+            .padding([.leading, .bottom, .trailing])
+            VStack {
+                if getMaxAndMinTempData.count > 0 {
+                    HStack {
+                        Image(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
+                            .resizable()
+                            .frame(width: 50, height: 50)
                         VStack(alignment: .leading) {
                             Text("Today")
-                                .font(.title)
-                            Text(String(getMaxAndMinTempData[1]) + "℃")
-                                .font(.title2)
-                                .foregroundColor(Color.red)
-                            Text(String(getMaxAndMinTempData[0]) + "℃")
-                                .font(.title2)
-                                .foregroundColor(Color.blue)
-                            VStack{
-                                Image(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
-                                Text(String(get_weather_name(weatherNumber: getTodayWeatherData.icon?[0] ?? 60)))
+                            HStack{
+                                Text(String(getMaxAndMinTempData[1]) + "℃")
+                                    .foregroundColor(Color.red)
+                                Spacer()
+                                Text(String(getMaxAndMinTempData[0]) + "℃")
+                                    .foregroundColor(Color.blue)
                             }
                         }
-                        .padding(.trailing, 15)
+                        .padding(.leading)
+                        Spacer()
                     }
-                    if getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
-                        ForEach (getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                            if date_format(weatherDate: weatherData.forecastDate ?? "Today") != "Today" {
+                    .padding(.vertical)
+                }
+                if getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
+                    ForEach (getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
+                        if date_format(weatherDate: weatherData.forecastDate ?? "Today") != "Today" {
+                            HStack() {
+                                Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
                                 VStack(alignment: .leading) {
                                     Text(String(date_format(weatherDate: weatherData.forecastDate ?? "20220101")))
-                                        .font(.title)
-                                    Text(String(weatherData.forecastMaxtemp?.value ?? 100) + "℃")
-                                        .font(.title2)
-                                        .foregroundColor(Color.red)
-                                    Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
-                                        .font(.title2)
-                                        .foregroundColor(Color.blue)
-                                    VStack{
-                                        Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
-                                        Text(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
+                                    HStack{
+                                        Text(String(weatherData.forecastMaxtemp?.value ?? 0) + "℃")
+                                            .foregroundColor(Color.red)
+                                        Spacer()
+                                        Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
+                                            .foregroundColor(Color.blue)
                                     }
                                 }
-                                .padding(.trailing, 15)
+                                .padding(.leading)
+                                Spacer()
                             }
+                            .padding(.vertical)
                         }
                     }
                 }
             }
-            Spacer()
+            .padding(.horizontal)
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .inactive {
@@ -127,7 +109,7 @@ struct ContentView: View {
                 print("Background")
             }
         }
-        .onReceive(timer) { _ in
+        .onReceive(timer) {_ in
             get_today_weather()
             get_max_min_temp()
             get_nine_days_weather()
@@ -140,11 +122,6 @@ struct ContentView: View {
             get_nine_days_weather()
             find_place()
         }
-        .padding(.leading, 20)
-        .background(
-            LinearGradient(gradient: Gradient(colors: [startColor, middleColor,endColor]), startPoint: .topTrailing, endPoint: .bottomLeading)
-        )
-        .ignoresSafeArea()
     }
     
     // today weather
@@ -241,6 +218,7 @@ struct ContentView: View {
                 getMaxAndMinTempData.append(temp)
             }
         }
+
     }
     
     //weaher number to string

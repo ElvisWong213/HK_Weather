@@ -41,11 +41,12 @@ struct Provider: TimelineProvider {
         
         get_today_weather { (todayWeatherData) in
             get_nine_days_weather { (nineWeatherData) in
-                let data = WidgetContent(date: currentDate, getTodayWeatherData: todayWeatherData, UserLocation: userLocation, allLocationData: getAllLocationData, getNineDaysWeatherData: nineWeatherData)
-                let entryDate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
-
-                let timeline = Timeline(entries: [data], policy: .after(entryDate))
-                completion(timeline)
+                get_max_min_temp { (maxMinWeatherData) in
+                    let data = WidgetContent(date: currentDate, getTodayWeatherData: todayWeatherData, UserLocation: userLocation, allLocationData: getAllLocationData, getNineDaysWeatherData: nineWeatherData, getMaxAndMinTempData: maxMinWeatherData)
+                    let entryDate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
+                    let timeline = Timeline(entries: [data], policy: .after(entryDate))
+                    completion(timeline)
+                }
             }
         }
 
@@ -72,6 +73,42 @@ struct Provider: TimelineProvider {
                 }
             }.resume()
         }
+    }
+    
+    func get_max_min_temp(completion: @escaping([Int]) -> ()) {
+        let address = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=en"
+        var dummy: [Int] = []
+        if let url = URL(string: address) {
+            // GET
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                }
+                else if let response = response as? HTTPURLResponse, let data = data {
+                    print("Status code: \(response.statusCode)")
+                    let decoder = JSONDecoder()
+
+                    if let maxAndMinTempData = try? decoder.decode(MaxAndMinTempInfo.self, from: data) {
+                        DispatchQueue.main.async{
+                            dummy = extract_max_min_value(maxAndMinTempData: maxAndMinTempData)
+                            completion(dummy)
+                        }
+                    }
+                }
+            }.resume()
+        }
+    }
+    
+    func extract_max_min_value(maxAndMinTempData: MaxAndMinTempInfo) -> [Int] {
+        var getMaxAndMinTempData: [Int] = []
+        let dummy: String = maxAndMinTempData.forecastDesc ?? ""
+        let dummyArray = dummy.components(separatedBy: CharacterSet.decimalDigits.inverted)
+        for i in dummyArray {
+            if let temp = Int(i) {
+                getMaxAndMinTempData.append(temp)
+            }
+        }
+        return getMaxAndMinTempData
     }
     
     func get_nine_days_weather(completion: @escaping(nineDaysWeatherInfo) -> ()) {
@@ -122,12 +159,18 @@ struct WidgetContent: TimelineEntry {
     var ShowTemperature = 0
     var allLocationData = locationInfo()
     var getNineDaysWeatherData = nineDaysWeatherInfo()
+    var getMaxAndMinTempData: [Int] = []
     
     let weatherIcon = ["Cloudy", "Cold", "Hot", "Raining", "Sunny intervals", "Sunny", "Thunder", "Windy"]
     let weatherIconNumber = [[60, 61, 76, 77, 83, 84, 85], [92, 93], [90, 91], [53, 54, 62, 63, 64], [51, 52, 76], [50, 70, 71, 72, 73, 74, 75], [65], [80, 81, 82]]
     
     static func snapshotWeatherEntry() -> WidgetContent {
-        return WidgetContent(date: Date(), getTodayWeatherData: todayWeatherInfo(icon: [60], temperature: Temperature(data: [TemperatureData(place: "Hong Kong", value: 0, unit: "℃")])), UserLocation: CLLocation(latitude: 0, longitude: 0), ShowTemperature: 0, allLocationData: locationInfo(data: [locationData(place: "Hong Kong", longitude: 114.177216, latitude: 22.302711)]), getNineDaysWeatherData: nineDaysWeatherInfo(weatherForecast: [nineDaysWeatherData(forecastDate: "20220101", forecastMaxtemp: tempData(value: 100, unit: "℃"), forecastMintemp: tempData(value: 0, unit: "℃"), ForecastIcon: 60)]))
+        return WidgetContent(date: Date(),
+                             getTodayWeatherData: todayWeatherInfo(icon: [60], temperature: Temperature(data: [TemperatureData(place: "Hong Kong", value: 0, unit: "℃")]), humidity: Humidity(data: [HumidityData(place: "Hong Kong", value: 0, unit: "%")])),
+                             UserLocation: CLLocation(latitude: 0, longitude: 0),
+                             ShowTemperature: 0,
+                             allLocationData: locationInfo(data: [locationData(place: "Hong Kong", longitude: 114.177216, latitude: 22.302711)]),
+                             getNineDaysWeatherData: nineDaysWeatherInfo(weatherForecast: [nineDaysWeatherData(forecastDate: "20220101", forecastMaxtemp: tempData(value: 100, unit: "℃"), forecastMintemp: tempData(value: 0, unit: "℃"), ForecastIcon: 60)]))
     }
     
 }
@@ -149,9 +192,9 @@ struct WeatherWidgetEntryView : View {
                     Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                         .resizable()
                         .frame(width: 50, height: 50)
-                    HStack {
-                        Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
-                    }
+                    Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                    Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
+                        .font(.footnote)
                     HStack {
                         Text(find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))
                         Image(systemName: "location.fill")
@@ -173,9 +216,9 @@ struct WeatherWidgetEntryView : View {
                     Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                         .resizable()
                         .frame(width: 50, height: 50)
-                    HStack {
-                        Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
-                    }
+                    Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                    Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
+                        .font(.footnote)
                     HStack {
                         Text(find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))
                         Image(systemName: "location.fill")
@@ -185,22 +228,29 @@ struct WeatherWidgetEntryView : View {
                 }
                 Spacer()
                 VStack {
-                    if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
-                        ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                            if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 5 < 4 {
-                                HStack {
-                                    Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
-                                        .resizable()
-                                        .frame(width: 25, height: 25)
-                                    Text(String(date_format(weatherDate: weatherData.forecastDate ?? "20220101")))
-                                        .font(.system(size: 14))
-                                    Text(String(weatherData.forecastMaxtemp?.value ?? 100) + "℃")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(Color.red)
-                                    Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(Color.blue)
+                    if entry.getMaxAndMinTempData.count >= 2 {
+                        ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
+                                      date: "Today",
+                                      maxTemp: entry.getMaxAndMinTempData[1],
+                                      minTemp: entry.getMaxAndMinTempData[0])
+                        if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
+                            ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
+                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 10 < 3 {
+                                    ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
+                                                  date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
+                                                  maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
+                                                  minTemp: weatherData.forecastMintemp?.value ?? 0)
                                 }
+                            }
+                        }
+                    }
+                    else if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
+                        ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
+                            if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 10 < 4 {
+                                ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
+                                              date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
+                                              maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
+                                              minTemp: weatherData.forecastMintemp?.value ?? 0)
                             }
                         }
                     }
@@ -219,9 +269,9 @@ struct WeatherWidgetEntryView : View {
                         Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                             .resizable()
                             .frame(width: 50, height: 50)
-                        HStack {
-                            Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
-                        }
+                        Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                        Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
+                            .font(.footnote)
                         HStack {
                             Text(find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))
                             Image(systemName: "location.fill")
@@ -233,22 +283,19 @@ struct WeatherWidgetEntryView : View {
                 }
                 HStack(alignment: .top) {
                     VStack {
+                        if entry.getMaxAndMinTempData.count >= 2 {
+                            ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
+                                          date: "Today",
+                                          maxTemp: entry.getMaxAndMinTempData[1],
+                                          minTemp: entry.getMaxAndMinTempData[0])
+                        }
                         if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                             ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 6 < 5 {
-                                    HStack {
-                                        Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
-                                            .resizable()
-                                            .frame(width: 25, height: 25)
-                                        Text(String(date_format(weatherDate: weatherData.forecastDate ?? "20220101")))
-                                            .font(.system(size: 14))
-                                        Text(String(weatherData.forecastMaxtemp?.value ?? 100) + "℃")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(Color.red)
-                                        Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(Color.blue)
-                                    }
+                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 6 < 4 {
+                                    ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
+                                                  date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
+                                                  maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
+                                                  minTemp: weatherData.forecastMintemp?.value ?? 0)
                                 }
                             }
                         }
@@ -256,20 +303,11 @@ struct WeatherWidgetEntryView : View {
                     VStack {
                         if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                             ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 0 >= 5 {
-                                    HStack {
-                                        Image(String(get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60)))
-                                            .resizable()
-                                            .frame(width: 25, height: 25)
-                                        Text(String(date_format(weatherDate: weatherData.forecastDate ?? "20220101")))
-                                            .font(.system(size: 14))
-                                        Text(String(weatherData.forecastMaxtemp?.value ?? 100) + "℃")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(Color.red)
-                                        Text(String(weatherData.forecastMintemp?.value ?? 0) + "℃")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(Color.blue)
-                                    }
+                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 0 >= 4 {
+                                    ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
+                                                  date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
+                                                  maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
+                                                  minTemp: weatherData.forecastMintemp?.value ?? 0)
                                 }
                             }
                         }
@@ -282,6 +320,8 @@ struct WeatherWidgetEntryView : View {
             .background(
                 LinearGradient(gradient: Gradient(colors: [startColor, middleColor,endColor]), startPoint: .topTrailing, endPoint: .bottomLeading)
             )
+        case .systemExtraLarge:
+            Text("extra large")
         @unknown default:
             Text("default")
         }
@@ -376,6 +416,7 @@ struct WeatherWidget: Widget {
 struct todayWeatherInfo: Codable {
     var icon: [Int]?
     var temperature: Temperature?
+    var humidity: Humidity?
 }
 
 struct Temperature: Codable {
@@ -385,6 +426,21 @@ struct TemperatureData: Codable {
     var place: String?
     var value: Int?
     var unit: String?
+}
+
+struct Humidity: Codable {
+    var data: [HumidityData]?
+}
+
+struct HumidityData: Codable {
+    var place: String?
+    var value: Int?
+    var unit: String?
+}
+
+//get max and min temp
+struct MaxAndMinTempInfo: Codable {
+    var forecastDesc: String?
 }
 
 // nine days weather
@@ -424,6 +480,32 @@ struct WeatherWidget_Previews: PreviewProvider {
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
             WeatherWidgetEntryView(entry: WidgetContent(date: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemLarge))
+        }
+    }
+}
+
+struct ExtractedWidget: View {
+    let icon: String
+    let date: String
+    let maxTemp: Int
+    let minTemp: Int
+    
+    var body: some View {
+        HStack {
+            Image(icon)
+                .resizable()
+                .frame(width: 25, height: 25)
+            Spacer()
+            Text(date)
+                .font(.system(size: 13))
+            Spacer()
+            Text(String(maxTemp) + "℃")
+                .font(.system(size: 13))
+                .foregroundColor(Color.red)
+            Spacer()
+            Text(String(minTemp) + "℃")
+                .font(.system(size: 13))
+                .foregroundColor(Color.blue)
         }
     }
 }
