@@ -33,7 +33,7 @@ struct Provider: TimelineProvider {
         
         userLocation = locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
         
-        var getAllLocationData = locationInfo()
+        var getAllLocationData = DataStruct.locationInfo()
         
         get_all_location_data { (allLocationData) in
             getAllLocationData = allLocationData
@@ -53,7 +53,7 @@ struct Provider: TimelineProvider {
         
     }
     
-    func get_today_weather(completion: @escaping(todayWeatherInfo) -> ()) {
+    func get_today_weather(completion: @escaping(DataStruct.todayWeatherInfo) -> ()) {
         let address = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
         if let url = URL(string: address) {
             // GET
@@ -65,7 +65,7 @@ struct Provider: TimelineProvider {
                     print("Status code: \(response.statusCode)")
                     let decoder = JSONDecoder()
 
-                    if let todayWeatherData = try? decoder.decode(todayWeatherInfo.self, from: data) {
+                    if let todayWeatherData = try? decoder.decode(DataStruct.todayWeatherInfo.self, from: data) {
                         DispatchQueue.main.async{
                             completion(todayWeatherData)
                         }
@@ -88,7 +88,7 @@ struct Provider: TimelineProvider {
                     print("Status code: \(response.statusCode)")
                     let decoder = JSONDecoder()
 
-                    if let maxAndMinTempData = try? decoder.decode(MaxAndMinTempInfo.self, from: data) {
+                    if let maxAndMinTempData = try? decoder.decode(DataStruct.MaxAndMinTempInfo.self, from: data) {
                         DispatchQueue.main.async{
                             dummy = extract_max_min_value(maxAndMinTempData: maxAndMinTempData)
                             completion(dummy)
@@ -99,7 +99,7 @@ struct Provider: TimelineProvider {
         }
     }
     
-    func extract_max_min_value(maxAndMinTempData: MaxAndMinTempInfo) -> [Int] {
+    func extract_max_min_value(maxAndMinTempData: DataStruct.MaxAndMinTempInfo) -> [Int] {
         var getMaxAndMinTempData: [Int] = []
         let dummy: String = maxAndMinTempData.forecastDesc ?? ""
         let dummyArray = dummy.components(separatedBy: CharacterSet.decimalDigits.inverted)
@@ -108,10 +108,17 @@ struct Provider: TimelineProvider {
                 getMaxAndMinTempData.append(temp)
             }
         }
+        if getMaxAndMinTempData.count >= 2 {
+            if getMaxAndMinTempData[0] > getMaxAndMinTempData[1] {
+                let dummy2 = getMaxAndMinTempData[0]
+                getMaxAndMinTempData[0] = getMaxAndMinTempData[1]
+                getMaxAndMinTempData[1] = dummy2
+            }
+        }
         return getMaxAndMinTempData
     }
     
-    func get_nine_days_weather(completion: @escaping(nineDaysWeatherInfo) -> ()) {
+    func get_nine_days_weather(completion: @escaping(DataStruct.nineDaysWeatherInfo) -> ()) {
         let address = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc"
         if let url = URL(string: address) {
             // GET
@@ -123,7 +130,7 @@ struct Provider: TimelineProvider {
                     print("Status code: \(response.statusCode)")
                     let decoder = JSONDecoder()
 
-                    if let nineDaysWeatherData = try? decoder.decode(nineDaysWeatherInfo.self, from: data) {
+                    if let nineDaysWeatherData = try? decoder.decode(DataStruct.nineDaysWeatherInfo.self, from: data) {
                         DispatchQueue.main.async{
                             completion(nineDaysWeatherData)
                         }
@@ -133,13 +140,13 @@ struct Provider: TimelineProvider {
         }
     }
     
-    func get_all_location_data(completion: @escaping(locationInfo) -> ()) {
+    func get_all_location_data(completion: @escaping(DataStruct.locationInfo) -> ()) {
         if let path = Bundle.main.path(forResource: "location", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let decoder = JSONDecoder()
 
-                if let locationData = try? decoder.decode(locationInfo.self, from: data) {
+                if let locationData = try? decoder.decode(DataStruct.locationInfo.self, from: data) {
 //                    DispatchQueue.main.async{
                     completion(locationData)
 //                    }
@@ -154,11 +161,11 @@ struct Provider: TimelineProvider {
 
 struct WidgetContent: TimelineEntry {
     let date: Date
-    var getTodayWeatherData = todayWeatherInfo()
+    var getTodayWeatherData = DataStruct.todayWeatherInfo()
     var UserLocation = CLLocation(latitude: 0, longitude: 0)
     var ShowTemperature = 0
-    var allLocationData = locationInfo()
-    var getNineDaysWeatherData = nineDaysWeatherInfo()
+    var allLocationData = DataStruct.locationInfo()
+    var getNineDaysWeatherData = DataStruct.nineDaysWeatherInfo()
     var getMaxAndMinTempData: [Int] = []
     
     let weatherIcon = ["Cloudy", "Cold", "Hot", "Raining", "Sunny intervals", "Sunny", "Thunder", "Windy"]
@@ -166,11 +173,11 @@ struct WidgetContent: TimelineEntry {
     
     static func snapshotWeatherEntry() -> WidgetContent {
         return WidgetContent(date: Date(),
-                             getTodayWeatherData: todayWeatherInfo(icon: [60], temperature: Temperature(data: [TemperatureData(place: "Hong Kong", value: 0, unit: "℃")]), humidity: Humidity(data: [HumidityData(place: "Hong Kong", value: 0, unit: "%")])),
+                             getTodayWeatherData: DataStruct.todayWeatherInfo(icon: [60], temperature: DataStruct.Temperature(data: [DataStruct.TemperatureData(place: "Hong Kong", value: 0, unit: "℃")]), humidity: DataStruct.Humidity(data: [DataStruct.HumidityData(place: "Hong Kong", value: 0, unit: "%")])),
                              UserLocation: CLLocation(latitude: 0, longitude: 0),
                              ShowTemperature: 0,
-                             allLocationData: locationInfo(data: [locationData(place: "Hong Kong", longitude: 114.177216, latitude: 22.302711)]),
-                             getNineDaysWeatherData: nineDaysWeatherInfo(weatherForecast: [nineDaysWeatherData(forecastDate: "20220101", forecastMaxtemp: tempData(value: 100, unit: "℃"), forecastMintemp: tempData(value: 0, unit: "℃"), ForecastIcon: 60)]))
+                             allLocationData: DataStruct.locationInfo(data: [DataStruct.locationData(place: "Hong Kong", longitude: 114.177216, latitude: 22.302711)]),
+                             getNineDaysWeatherData: DataStruct.nineDaysWeatherInfo(weatherForecast: [DataStruct.nineDaysWeatherData(forecastDate: "20220101", forecastMaxtemp: DataStruct.tempData(value: 100, unit: "℃"), forecastMintemp: DataStruct.tempData(value: 0, unit: "℃"), ForecastIcon: 60)]))
     }
     
 }
@@ -179,9 +186,9 @@ struct WeatherWidgetEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
 
-    let startColor = Color(red: 238/255, green: 231/255, blue: 203/255)
-    let middleColor = Color(red: 57/255, green: 61/255, blue: 93/255, opacity: 0.76)
-    let endColor = Color(red: 57/255, green: 61/255, blue: 93/255)
+    let startColor = Color("startColor")
+    let middleColor = Color("middleColor")
+    let endColor = Color("endColor")
     
     var body: some View {
         switch widgetFamily {
@@ -191,8 +198,8 @@ struct WeatherWidgetEntryView : View {
                 VStack(alignment: .leading) {
                     Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                         .resizable()
-                        .frame(width: 50, height: 50)
-                    Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                        .frame(width: 45, height: 45)
+                    Text(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData)) + "℃")
                     Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
                         .font(.footnote)
                     HStack {
@@ -215,8 +222,8 @@ struct WeatherWidgetEntryView : View {
                 VStack(alignment: .leading) {
                     Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                         .resizable()
-                        .frame(width: 50, height: 50)
-                    Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                        .frame(width: 45, height: 45)
+                    Text(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData)) + "℃")
                     Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
                         .font(.footnote)
                     HStack {
@@ -226,25 +233,16 @@ struct WeatherWidgetEntryView : View {
                     }
     //                Text(entry.date, style: .time)
                 }
-                Spacer()
+                Spacer(minLength: 25)
                 VStack {
-                    if entry.getMaxAndMinTempData.count >= 2 {
-                        ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
-                                      date: "Today",
-                                      maxTemp: entry.getMaxAndMinTempData[1],
-                                      minTemp: entry.getMaxAndMinTempData[0])
-                        if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
-                            ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 10 < 3 {
-                                    ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
-                                                  date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
-                                                  maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
-                                                  minTemp: weatherData.forecastMintemp?.value ?? 0)
-                                }
-                            }
-                        }
-                    }
-                    else if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
+//                    if entry.getMaxAndMinTempData.count >= 2 {
+//                        ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
+//                                      date: "Today",
+//                                      maxTemp: entry.getMaxAndMinTempData[1],
+//                                      minTemp: entry.getMaxAndMinTempData[0])
+//
+//                    }
+                    if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                         ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
                             if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 10 < 4 {
                                 ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
@@ -268,8 +266,8 @@ struct WeatherWidgetEntryView : View {
                     VStack(alignment: .leading) {
                         Image(get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60))
                             .resizable()
-                            .frame(width: 50, height: 50)
-                        Text(String(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData))) + "℃")
+                            .frame(width: 45, height: 45)
+                        Text(mach_temp_location(getTodayWeatherData: entry.getTodayWeatherData, ShowLocation: find_place(userLocation: entry.UserLocation, getLocationData: entry.allLocationData)) + "℃")
                         Text(String(entry.getTodayWeatherData.humidity?.data?[0].value ?? 0) + "%")
                             .font(.footnote)
                         HStack {
@@ -283,15 +281,15 @@ struct WeatherWidgetEntryView : View {
                 }
                 HStack(alignment: .top) {
                     VStack {
-                        if entry.getMaxAndMinTempData.count >= 2 {
-                            ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
-                                          date: "Today",
-                                          maxTemp: entry.getMaxAndMinTempData[1],
-                                          minTemp: entry.getMaxAndMinTempData[0])
-                        }
+//                        if entry.getMaxAndMinTempData.count >= 2 {
+//                            ExtractedWidget(icon: get_weather_name(weatherNumber: entry.getTodayWeatherData.icon?[0] ?? 60),
+//                                          date: "Today",
+//                                          maxTemp: entry.getMaxAndMinTempData[1],
+//                                          minTemp: entry.getMaxAndMinTempData[0])
+//                        }
                         if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                             ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 6 < 4 {
+                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 6 < 5 && date_format(weatherDate: weatherData.forecastDate ?? "Today") != "Today"{
                                     ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
                                                   date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
                                                   maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
@@ -303,7 +301,7 @@ struct WeatherWidgetEntryView : View {
                     VStack {
                         if entry.getNineDaysWeatherData.weatherForecast?.count ?? 0 > 0 {
                             ForEach (entry.getNineDaysWeatherData.weatherForecast!, id: \.self) { weatherData in
-                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 0 >= 4 {
+                                if entry.getNineDaysWeatherData.weatherForecast?.firstIndex(of: weatherData) ?? 0 >= 5 {
                                     ExtractedWidget(icon: get_weather_name(weatherNumber: weatherData.ForecastIcon ?? 60),
                                                   date: date_format(weatherDate: weatherData.forecastDate ?? "20220101"),
                                                   maxTemp: weatherData.forecastMaxtemp?.value ?? 100,
@@ -346,17 +344,18 @@ struct WeatherWidgetEntryView : View {
     }
     
     //match temperature with user location
-    func mach_temp_location(getTodayWeatherData: todayWeatherInfo, ShowLocation: String) -> Int{
-        var returnShowTemperature = 0
+    func mach_temp_location(getTodayWeatherData: DataStruct.todayWeatherInfo, ShowLocation: String) -> String{
+        var returnShowTemperature = "--"
         for i in getTodayWeatherData.temperature?.data ?? [] {
             if i.place == ShowLocation {
-                returnShowTemperature = i.value ?? 0
+                returnShowTemperature = String(i.value!) ?? "--"
+                break
             }
         }
         return returnShowTemperature
     }
     
-    func find_place(userLocation: CLLocation, getLocationData: locationInfo) -> String{
+    func find_place(userLocation: CLLocation, getLocationData: DataStruct.locationInfo) -> String{
         var returnShowLocation = "Hong Kong"
         let CLL_getLocationData = CLLocation(latitude: getLocationData.data?[0].latitude ?? 0.0, longitude: getLocationData.data?[0].longitude ?? 0.0)
         var distanceInMeters = CLL_getLocationData.distance(from: userLocation)
@@ -410,65 +409,6 @@ struct WeatherWidget: Widget {
         .description("See the current weather forecast of the location")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
-}
-
-// today weather
-struct todayWeatherInfo: Codable {
-    var icon: [Int]?
-    var temperature: Temperature?
-    var humidity: Humidity?
-}
-
-struct Temperature: Codable {
-    var data: [TemperatureData]?
-}
-struct TemperatureData: Codable {
-    var place: String?
-    var value: Int?
-    var unit: String?
-}
-
-struct Humidity: Codable {
-    var data: [HumidityData]?
-}
-
-struct HumidityData: Codable {
-    var place: String?
-    var value: Int?
-    var unit: String?
-}
-
-//get max and min temp
-struct MaxAndMinTempInfo: Codable {
-    var forecastDesc: String?
-}
-
-// nine days weather
-struct nineDaysWeatherInfo: Codable, Hashable {
-    var weatherForecast: [nineDaysWeatherData]?
-}
-
-struct nineDaysWeatherData: Codable, Hashable {
-    var forecastDate: String?
-    var forecastMaxtemp: tempData?
-    var forecastMintemp: tempData?
-    var ForecastIcon: Int?
-}
-
-struct tempData: Codable, Hashable {
-    var value: Int?
-    var unit: String?
-}
-
-// user location
-struct locationInfo: Codable {
-    var data: [locationData]?
-}
-
-struct locationData: Codable {
-    var place: String?
-    var longitude: Double?
-    var latitude: Double?
 }
 
 struct WeatherWidget_Previews: PreviewProvider {
