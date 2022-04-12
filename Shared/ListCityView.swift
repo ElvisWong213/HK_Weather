@@ -49,8 +49,11 @@ struct ListCityView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Citys")
+            .navigationTitle("Stations")
             .background(LinearGradient(gradient: Gradient(colors: [startColor, middleColor,endColor]), startPoint: .topTrailing, endPoint: .bottomLeading).ignoresSafeArea())
+        }
+        .onAppear() {
+            sortWeatherData()
         }
     }
     
@@ -71,6 +74,23 @@ struct ListCityView: View {
             }
         }
         return output
+    }
+    
+    func sortWeatherData() {
+        while true {
+            var sorted = true
+            for i in 0..<(getTodayWeatherData.temperature?.data?.count ?? 1) - 1 {
+                if (getTodayWeatherData.temperature?.data![i].place?.prefix(1))! > (getTodayWeatherData.temperature?.data![i + 1].place?.prefix(1))! {
+                    let dummy = getTodayWeatherData.temperature?.data![i]
+                    getTodayWeatherData.temperature?.data![i] = (getTodayWeatherData.temperature?.data![i + 1])!
+                    getTodayWeatherData.temperature?.data![i + 1] = dummy!
+                    sorted = false
+                }
+            }
+            if sorted {
+                break
+            }
+        }
     }
 }
 
