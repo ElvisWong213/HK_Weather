@@ -25,6 +25,9 @@ HK Weather is compatible with iOS, iPadOS, watchOS and macOS, allowing you to ac
 - Swift 5.X
 - XCode 10.2 or later
 
+## Used API
+Hong Kong Observatory Open Data API
+
 ## Screenshots
 <p align="center">
     <img src="images/ipad.png" width="500">
