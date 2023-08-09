@@ -36,8 +36,8 @@ HK Weather is compatible with iOS, iPadOS, watchOS and macOS, allowing you to ac
 Hong Kong Observatory Open Data API
 
 ## Screenshots
-<p align="center">
-    <img src="images/ipad.png" width="500">
-    <img src="images/iphone.png" width="500">
-    <img src="images/watch.png" width="500">
+<p>
+    <img src="images/watch.png" width="300">
+    <img src="images/iphone.png" width="300">
+    <img src="images/ipad.png" width="300">
 </p>
