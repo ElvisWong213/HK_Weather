@@ -6,7 +6,7 @@
 ## About this project
 HK Weather is a comprehensive weather app built using SwiftUI. With this app, users can easily access the latest weather information for Hong Kong for up to 9 days in advance. The app provides real-time weather updates, ensuring that you always have the most up-to-date information at your fingertips.
 
-## Used Technology
+## Framework Used
 - SwiftUI 📱
 - CoreLocation 📍
 - WidgetKit 🎛️
